@@ -6,6 +6,14 @@ inputs:
     description: 'GitHub token'
     required: true
 
+outputs:
+  issue-number:
+    description: 'Extracted issue number from branch'
+    value: ${{ steps.extract-issue.outputs.issue-number }}
+  issue-exists:
+    description: 'Whether the issue exists on GitHub'
+    value: ${{ steps.issue-exists.outputs.issue-exists }}
+
 runs:
   using: 'composite'
   steps:
@@ -14,18 +22,16 @@ runs:
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
-        ISSUE_NO=$(echo $BRANCH|cut -d"-" -f1| cut -d"." -f2)
+        ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
 
         echo "Found issue number: $ISSUE_NO"
         echo "Branch: $BRANCH"
         echo "Issue No: $ISSUE_NO"
         echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
-        echo "issue-exists=true" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
       id: issue-exists
       shell: bash
-      if: steps.extract-issue.outputs.issue-exists == 'true'
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
@@ -36,9 +42,11 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           https://api.github.com/repos/$REPO/issues/$ISSUE_NO)
-        
+
         if [ "$STATUS_CODE" -eq 200 ]; then
           echo "✅ Issue #$ISSUE_NO exists in $REPO"
+          echo "issue-exists=true" >> $GITHUB_OUTPUT
         else
           echo "❌ Issue #$ISSUE_NO does NOT exist in $REPO (HTTP $STATUS_CODE)"
+          echo "issue-exists=false" >> $GITHUB_OUTPUT
         fi
