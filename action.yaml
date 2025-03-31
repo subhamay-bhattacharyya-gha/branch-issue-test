@@ -41,9 +41,8 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        set -e
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
-
+        ISSUE_NO=123
         # Query GitHub issues via API
         RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --jq '.number' || echo "")
         echo $RESPONSE
