@@ -35,6 +35,8 @@ runs:
         echo "issue_exists=true" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
+      id: issue-exists
+      shell: bash
       if: steps.extract.outputs.issue_exists == 'true'
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
