@@ -28,28 +28,28 @@ runs:
         BRANCH="${GITHUB_REF##*/}"
         ISSUE_NO=$(echo $BRANCH|cut -d"-" -f1| cut -d"." -f2)
 
-        echo "Found issue number: $ISSUE_NUMBER"
+        echo "Found issue number: $ISSUE_NO"
         echo "Branch: $BRANCH"
         echo "Issue No: $ISSUE_NO"
-        echo "issue_number=$ISSUE_NO" >> $GITHUB_OUTPUT
-        echo "issue_exists=true" >> $GITHUB_OUTPUT
+        echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
+        echo "issue-exists=true" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
       id: issue-exists
       shell: bash
-      if: steps.extract.outputs.issue_exists == 'true'
+      if: steps.extract-issue.outputs.issue-exists == 'true'
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
         set -e
-        ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
+        ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
 
         # Query GitHub issues via API
-        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER --silent --jq '.number' || echo "")
+        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --silent --jq '.number' || echo "")
 
         if [ -z "$RESPONSE" ]; then
-          echo "Issue #$ISSUE_NUMBER not found in this repo. Failing."
+          echo "Issue #$ISSUE_NO not found in this repo. Failing."
           exit 1
         else
-          echo "Issue #$ISSUE_NUMBER exists."
+          echo "Issue #$ISSUE_NO exists."
         fi
