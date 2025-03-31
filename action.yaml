@@ -45,7 +45,7 @@ runs:
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
 
         # Query GitHub issues via API
-        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO || echo "")
+        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --jq '.number' || echo "")
         echo $RESPONSE
 
         if [ -z "$RESPONSE" ]; then
