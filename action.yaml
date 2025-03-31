@@ -12,7 +12,7 @@ outputs:
     value: ${{ steps.extract-issue.outputs.issue-number }}
   issue-exists:
     description: 'Whether the issue exists on GitHub'
-    value: ${{ steps.issue-exists.outputs.issue-exists }}
+    value: ${{ steps.check.outputs.issue-exists }}
 
 runs:
   using: 'composite'
@@ -23,13 +23,12 @@ runs:
       run: |
         BRANCH="${GITHUB_REF##*/}"
         ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
-
         echo "Branch: $BRANCH"
         echo "Found issue number: $ISSUE_NO"
         echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
-      id: issue-exists
+      id: check
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
