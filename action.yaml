@@ -22,7 +22,8 @@ runs:
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
-        ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
+        # ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
+        ISSUE_NO=123
 
         echo "Branch: $BRANCH"
         echo "Found issue number: $ISSUE_NO"
@@ -36,7 +37,6 @@ runs:
       run: |
         REPO="${{ github.repository }}"
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
-        ISSUE_NO=123
         
         STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
           -H "Accept: application/vnd.github+json" \
