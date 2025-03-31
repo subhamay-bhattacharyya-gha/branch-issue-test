@@ -50,7 +50,7 @@ runs:
           https://api.github.com/repos/$REPO/issues/$ISSUE_NO)
         
         if [ "$STATUS_CODE" -eq 200 ]; then
-          echo "✅ Issue #$ISSUE_NUMBER exists in $REPO"
+          echo "✅ Issue #$ISSUE_NO exists in $REPO"
         else
-          echo "❌ Issue #$ISSUE_NUMBER does NOT exist in $REPO (HTTP $STATUS_CODE)"
+          echo "❌ Issue #$ISSUE_NO does NOT exist in $REPO (HTTP $STATUS_CODE)"
         fi
