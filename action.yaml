@@ -22,8 +22,7 @@ runs:
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
-        # ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
-        ISSUE_NO=123
+        ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
 
         echo "Branch: $BRANCH"
         echo "Found issue number: $ISSUE_NO"
