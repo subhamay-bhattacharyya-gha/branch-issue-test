@@ -45,7 +45,7 @@ runs:
         ISSUE_NO=123
         
         # Query GitHub issues via API
-        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --jq ".number" || "NOT_FOUND")
+        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --jq ".number" || echo "NOT_FOUND")
         echo $RESPONSE
         # STATUS_CODE=$(echo $RESPONSE|jq '.status')
         # echo "Status Code: $STATUS_CODE" >> $GITHUB_OUTPUT
