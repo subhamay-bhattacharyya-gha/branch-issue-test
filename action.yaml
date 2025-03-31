@@ -23,6 +23,7 @@ runs:
   steps:
     - name: Extract issue number from branch
       id: extract-issue
+      shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
         echo "Branch: $BRANCH"
