@@ -24,9 +24,8 @@ runs:
         BRANCH="${GITHUB_REF##*/}"
         ISSUE_NO=$(echo "$BRANCH" | cut -d"-" -f1 | cut -d"." -f2)
 
-        echo "Found issue number: $ISSUE_NO"
         echo "Branch: $BRANCH"
-        echo "Issue No: $ISSUE_NO"
+        echo "Found issue number: $ISSUE_NO"
         echo "issue-number=$ISSUE_NO" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
