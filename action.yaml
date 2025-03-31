@@ -45,7 +45,8 @@ runs:
         ISSUE_NO=${{ steps.extract-issue.outputs.issue-number }}
 
         # Query GitHub issues via API
-        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO --silent --jq '.number' || echo "")
+        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO || echo "")
+        echo $RESPONSE
 
         if [ -z "$RESPONSE" ]; then
           echo "Issue #$ISSUE_NO not found in this repo. Failing."
