@@ -26,4 +26,6 @@ runs:
       shell: bash
       run: |
         BRANCH="${GITHUB_REF##*/}"
+        ISSUE_NO=$(echo $BRANCH|cut -d"-" -f1| cut -d"." -f2)
         echo "Branch: $BRANCH"
+        echo "Issue No: $ISSUE_NO"
