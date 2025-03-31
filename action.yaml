@@ -31,7 +31,7 @@ runs:
         echo "Found issue number: $ISSUE_NUMBER"
         echo "Branch: $BRANCH"
         echo "Issue No: $ISSUE_NO"
-        echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+        echo "issue_number=$ISSUE_NO" >> $GITHUB_OUTPUT
         echo "issue_exists=true" >> $GITHUB_OUTPUT
 
     - name: Check if GitHub issue exists
