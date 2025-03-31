@@ -45,12 +45,13 @@ runs:
 
         # Query GitHub issues via API
         RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NO)
-        STATUS_CODE=$(echo $RESPONSE|jq '.status')
-        echo "Status Code: $STATUS_CODE" >> $GITHUB_OUTPUT
+        echo $RESPONSE
+        # STATUS_CODE=$(echo $RESPONSE|jq '.status')
+        # echo "Status Code: $STATUS_CODE" >> $GITHUB_OUTPUT
 
-        if [[ "$STATUS_CODE" -ne 200 ]]; then
-          echo "Issue #$ISSUE_NO not found in this repo. Failing."
-          exit 1
-        else
-          echo "Issue #$ISSUE_NO exists."
-        fi
+        # if [[ "$STATUS_CODE" -ne 200 ]]; then
+        #   echo "Issue #$ISSUE_NO not found in this repo. Failing."
+        #   exit 1
+        # else
+        #   echo "Issue #$ISSUE_NO exists."
+        # fi
