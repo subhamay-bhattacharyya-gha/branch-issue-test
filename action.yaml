@@ -48,7 +48,7 @@ runs:
         STATUS_CODE=$(echo $RESPONSE|jq '.status')
         echo "Status Code: $STATUS_CODE" >> $GITHUB_OUTPUT
 
-        if [ -z "$RESPONSE" ]; then
+        if [ "$STATUS_CODE" -ne "200" ]; then
           echo "Issue #$ISSUE_NO not found in this repo. Failing."
           exit 1
         else
