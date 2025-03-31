@@ -27,5 +27,27 @@ runs:
       run: |
         BRANCH="${GITHUB_REF##*/}"
         ISSUE_NO=$(echo $BRANCH|cut -d"-" -f1| cut -d"." -f2)
+
+        echo "Found issue number: $ISSUE_NUMBER"
         echo "Branch: $BRANCH"
         echo "Issue No: $ISSUE_NO"
+        echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+        echo "issue_exists=true" >> $GITHUB_OUTPUT
+
+    - name: Check if GitHub issue exists
+      if: steps.extract.outputs.issue_exists == 'true'
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        set -e
+        ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
+
+        # Query GitHub issues via API
+        RESPONSE=$(gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER --silent --jq '.number' || echo "")
+
+        if [ -z "$RESPONSE" ]; then
+          echo "Issue #$ISSUE_NUMBER not found in this repo. Failing."
+          exit 1
+        else
+          echo "Issue #$ISSUE_NUMBER exists."
+        fi
